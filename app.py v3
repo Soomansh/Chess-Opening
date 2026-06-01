@@ -1,0 +1,185 @@
+import streamlit as st
+
+#-----------------------------------------------------------------------------------------------------------------------------------------
+# Page setup
+#--------------------------------------------------------------------------------------------------------------------------------
+
+st.title("Chess Opening Decider")
+st.write(
+    "A simple AI-style chess opening recommender that suggests openings "
+    "based on your preferences and playing style."
+)
+
+#--------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Opening database
+#---------------------------------------------------------------------------------------------------------------------------------------------------
+
+openings = {
+    "Italian Game": {
+        "why": "Excellent for fast development and early attacking chances.",
+        "strengths": "Quick development, open positions, tactical play.",
+        "weaknesses": "Can become sharp and tactical quickly.",
+        "moves_white": "1. e4 e5 2. Nf3 Nc6 3. Bc4",
+        "moves_black": "1. e4 e5 2. Nf3 Nc6 3... Bc5"
+    },
+
+    "Vienna Game": {
+        "why": "Flexible system with early attacking ideas.",
+        "strengths": "Creative attacks and less theory.",
+        "weaknesses": "Less commonly studied.",
+        "moves_white": "1. e4 e5 2. Nc3",
+        "moves_black": "1. e4 e5 2. Nc6"
+    },
+
+    "Scotch Game": {
+        "why": "Open positions and fast development.",
+        "strengths": "Active pieces and tactical chances.",
+        "weaknesses": "Sharp positions.",
+        "moves_white": "1. e4 e5 2. Nf3 Nc6 3. d4",
+        "moves_black": "1. e4 e5 2. Nf3 Nc6 3... d5"
+    },
+
+    "London System": {
+        "why": "Simple and solid system for consistent play.",
+        "strengths": "Easy structure and low theory.",
+        "weaknesses": "Less aggressive attacking chances.",
+        "moves_white": "1. d4 2. Nf3 3. Bf4 4. e3",
+        "moves_black": "Solid setup against d4 systems"
+    },
+
+    "Queen's Gambit": {
+        "why": "Strong central control and long-term pressure.",
+        "strengths": "Excellent positional control.",
+        "weaknesses": "Requires strategic understanding.",
+        "moves_white": "1. d4 d5 2. c4",
+        "moves_black": "1. d4 d5 2. c4 e6 / c6"
+    },
+
+    "Sicilian Defense": {
+        "why": "Aggressive counterattacking system for Black.",
+        "strengths": "Winning chances and dynamic play.",
+        "weaknesses": "Heavy theory.",
+        "moves_white": "1. e4 c5",
+        "moves_black": "1. e4 c5"
+    },
+
+    "Caro-Kann Defense": {
+        "why": "Solid defensive structure with stability.",
+        "strengths": "Strong pawn structure.",
+        "weaknesses": "Less aggressive.",
+        "moves_white": "1. e4 c6 2. d4 d5",
+        "moves_black": "1. e4 c6"
+    }
+}
+
+#-----------------------------------------------------------------------------------------------------------------------------------------------
+# Session state fix (Show moves button)
+#--------------------------------------------------------------------------------------------------------------------------------------
+
+if "show_moves" not in st.session_state:
+    st.session_state.show_moves = ""
+
+#------------------------------------------------------------------------------------------------------------------------------------
+# User inputs
+#---------------------------------------------------------------------------------------------------------------------------------------------
+
+skill = st.selectbox("Skill level", ["Beginner", "Intermediate", "Advanced"])
+style = st.selectbox("Play style", ["Defensive", "Positional", "Aggressive"])
+color = st.selectbox("Color", ["White", "Black"])
+theory = st.selectbox("Theory level", ["Very Little", "Some", "A TON!"])
+position_type = st.selectbox("Position type", ["Open and Tactical", "Balanced", "Closed and Strategic"])
+
+goal = st.selectbox(
+    "Goal",
+    ["Improve Fundamentals", "Attack the enemy King", "Play solid Chess", "Win Tournaments"]
+)
+
+aggressiveness = st.slider("Aggressiveness level", 0, 10, 5)
+
+#------------------------------------------------------------------------------------------------------------------------------------------------
+# Recommendation system
+#---------------------------------------------------------------------------------------------------------------------------------------------------
+
+if st.button("Get Recommendations"):
+
+    if color == "White":
+
+        if aggressiveness >= 7:
+            recommendations = ["Italian Game", "Scotch Game"]
+            reason = "You prefer aggressive attacking positions."
+
+        elif aggressiveness >= 4:
+            recommendations = ["Vienna Game", "Queen's Gambit"]
+            reason = "Balanced attacking style detected."
+
+        else:
+            recommendations = ["London System", "Queen's Gambit"]
+            reason = "Solid positional style detected."
+
+    else:
+
+        if aggressiveness >= 7:
+            recommendations = ["Sicilian Defense"]
+            reason = "Aggressive counterattacking style detected."
+
+        elif aggressiveness >= 4:
+            recommendations = ["Caro-Kann Defense"]
+            reason = "Balanced defensive style detected."
+
+        else:
+            recommendations = ["Caro-Kann Defense", "London System"]
+            reason = "Safe and solid style detected."
+
+    #-------------------------------------------------------------------------------------------------------------------------
+    # Output section
+    #----------------------------------------------------------------------------------------------------------------------------------------------
+
+    st.subheader("Analysis")
+
+    st.write(f"Style: {style} | Goal: {goal} | Aggressiveness: {aggressiveness}/10")
+
+    st.info(reason)
+
+    st.subheader("Recommended Openings")
+
+    for opening in recommendations:
+
+        st.success(opening)
+
+        st.button(
+            f"Show moves for {opening}",
+            key=opening,
+            on_click=lambda o=opening: st.session_state.update({"show_moves": o})
+        )
+
+        if st.session_state.show_moves == opening:
+
+            st.markdown("**Moves:**")
+            st.write("White ideas:", openings[opening]["moves_white"])
+            st.write("Black ideas:", openings[opening]["moves_black"])
+
+        st.markdown("**Why this opening?**")
+        st.write(openings[opening]["why"])
+
+        st.markdown("**Strengths**")
+        st.write(openings[opening]["strengths"])
+
+        st.markdown("**Weaknesses**")
+        st.write(openings[opening]["weaknesses"])
+
+        st.markdown("---")
+
+#----------------------------------------------------------------------------------------------------------------------------------------------------
+# Advice section
+#---------------------------------------------------------------------------------------------------------------------------------
+
+st.subheader("Improvement Advice")
+
+if skill == "Beginner":
+    st.info("Focus on ideas, not memorization. Play slow games and avoid blunders.")
+
+elif skill == "Intermediate":
+    st.info("Study common plans, tactics, and endgames. Explore opening theory.")
+
+else:
+    st.info("Focus on deep theory and refinement. Analyze your games and improve precision.")
