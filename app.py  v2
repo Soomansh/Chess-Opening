@@ -1,0 +1,107 @@
+import streamlit as st
+
+#------------------------------------------------------------------------------------------------------------------------------
+# Page setup
+#-------------------------------------------------------------------------------------------------------------------------------------------
+
+st.title("Chess Opening AI")
+st.write("Recommends chess openings based on your style and skill level.")
+
+#--------------------------------------------------------------------------------------------------------------------------------------------
+# User inputs
+#--------------------------------------------------------------------------------------------------------------------------------------
+
+skill = st.selectbox("Skill level", ["Beginner", "Intermediate", "Advanced"])
+
+style = st.selectbox("Play style", ["Defensive", "Positional", "Aggressive"])
+
+color = st.selectbox("Color", ["White", "Black"])
+
+#----------------------------------------------------------------------------------------------------------------------------------------------------
+# Generate recommendations
+#------------------------------------------------------------------------------------------------------------------------------------------
+
+if st.button("Get Recommendations"):
+
+    st.subheader("Recommended Openings")
+
+    # White side logic
+    if color == "White":
+
+        if style == "Defensive":
+            openings = ["London System", "King's Indian Attack", "Colle System"]
+
+        elif style == "Positional":
+            openings = ["Queen's Gambit", "London System", "Catalan Opening"]
+
+        else:
+            openings = ["Italian Game", "Vienna Game", "Scotch Game"]
+
+    # Black side logic
+    else:
+
+        if style == "Defensive":
+            openings = ["Caro-Kann Defense", "French Defense", "Petroff Defense"]
+
+        elif style == "Positional":
+            openings = ["Caro-Kann Defense", "Slav Defense", "French Defense"]
+
+        else:
+            openings = ["Sicilian Defense", "King's Indian Defense", "Pirc Defense"]
+
+    #---------------------------------------------------------------------------------------------------------------------------------------
+    # Display openings + explanations
+    #----------------------------------------------------------------------------------------------------------------------
+
+    for opening in openings:
+
+        st.success(opening)
+
+        st.write("Why this works:")
+
+        if style == "Aggressive":
+            st.write(
+                "This opening creates active positions and gives attacking chances early in the game."
+            )
+
+        elif style == "Positional":
+            st.write(
+                "This opening focuses on controlling the center and building long-term advantages."
+            )
+
+        else:
+            st.write(
+                "This opening prioritizes safety, solid structure, and low-risk positions."
+            )
+
+        st.write("General idea:")
+        st.write(
+            "This opening matches your selected play style and helps you reach comfortable middlegame positions."
+        )
+
+        st.divider()
+
+    #-----------------------------------------------------------------------------------------------------------------------------
+    # Skill-based advice
+    #-------------------------------------------------------------------------------------------------------------------------------------------
+
+    st.subheader("Improvement Advice")
+
+    if skill == "Beginner":
+        st.info("Focus on learning ideas and plans, not memorizing moves.")
+
+    elif skill == "Intermediate":
+        st.info("Study common tactical patterns and middlegame strategies.")
+
+    else:
+        st.info("Study deep theory, move orders, and advanced variations.")
+
+    #----------------------------------------------------------------------------------------------------------------------------------
+    # Summary section
+    #-----------------------------------------------------------------------------------------------------------------------
+
+    st.subheader("Your Profile Summary")
+
+    st.write(f"Skill level: {skill}")
+    st.write(f"Play style: {style}")
+    st.write(f"Color preference: {color}")
