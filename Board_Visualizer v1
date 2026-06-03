@@ -1,0 +1,85 @@
+#AI was used to troubleshoot and exlore effienct ways to write this code...
+#-----------------------------------------------------------------------------------------------------------------
+
+import streamlit as st
+import chess
+import chess.svg
+
+st.title("♟️ Chess Opening Visualizer (Real Board)")
+
+# =====================================================================================================================================
+# OPENINGS ( THIS IS TEST SO THERE ARE ONLY 2 OPENINGS!!! )
+# =======================================================================================================================================
+
+openings = {
+    "Italian Game": [
+        "e2e4",
+        "e7e5",
+        "g1f3",
+        "b8c6",
+        "f1c4"
+    ],
+    "Queen's Gambit": [
+        "d2d4",
+        "d7d5",
+        "c2c4"
+    ]
+}
+
+opening = st.selectbox("Choose Opening", list(openings.keys()))
+moves = openings[opening]
+
+# =================================================================================================================================================
+# STATE
+# =========================================================================================================================================
+
+if "step" not in st.session_state:
+    st.session_state.step = 0
+
+if "board" not in st.session_state:
+    st.session_state.board = chess.Board()
+
+if "current" not in st.session_state:
+    st.session_state.current = opening
+
+# reset if changed
+if st.session_state.current != opening:
+    st.session_state.step = 0
+    st.session_state.board = chess.Board()
+    st.session_state.current = opening
+
+# ================================================================================================================================
+# MOVE CONTROL
+# ===========================================================================================================================
+
+col1, col2 = st.columns(2)
+
+with col1:
+    if st.button("⬅ Back"):
+        st.session_state.step = max(0, st.session_state.step - 1)
+        st.session_state.board = chess.Board()
+        for i in range(st.session_state.step):
+            st.session_state.board.push_uci(moves[i])
+
+with col2:
+    if st.button("Next ➡"):
+        if st.session_state.step < len(moves):
+            st.session_state.board.push_uci(moves[st.session_state.step])
+            st.session_state.step += 1
+
+# ====================================================================================================================================
+# ACTUAL BOARD RENDERING HERE
+# ==========================================================================================================================================
+
+svg_board = chess.svg.board(
+    board=st.session_state.board,
+    size=500
+)
+
+st.markdown(svg_board, unsafe_allow_html=True)
+
+# ==============================================================================================================================
+# MOVE INFO
+# =======================================================================================================
+
+st.write(f"Move: {st.session_state.step} / {len(moves)}")
