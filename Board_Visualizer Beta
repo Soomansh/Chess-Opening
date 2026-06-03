@@ -1,0 +1,316 @@
+#-------------------------------------------------------------------------------------------------------------------------------------
+#AI was used in helping to write and configure the code
+#This code was written half by AI and half by human... Please keep this in mind when continuing through the code...
+#---------------------------------------------------------------------------------------------------------------------------------------
+
+import streamlit as st
+
+st.title("♟️ Chess Opening Visualizer")
+
+# ===========================================================================================================================
+# PIECES
+# ===========================================================================================================================================
+
+piece_unicode = {
+    "P":"♙","N":"♘","B":"♗","R":"♖","Q":"♕","K":"♔",
+    "p":"♟","n":"♞","b":"♝","r":"♜","q":"♛","k":"♚"
+}
+
+WHITE = ["P","N","B","R","Q","K"]
+BLACK = ["p","n","b","r","q","k"]
+
+files = ["a","b","c","d","e","f","g","h"]
+ranks = ["8","7","6","5","4","3","2","1"]
+
+# ========================================================================================================================================
+# OPENINGS
+# =======================================================================================================================================
+
+visual_openings = {
+
+    "Italian Game": {
+        "side": "white",
+        "moves": [
+            ("P","e2","e4"),
+            ("p","e7","e5"),
+            ("N","g1","f3"),
+            ("n","b8","c6"),
+            ("B","f1","c4"),
+            ("n","g8","f6"),
+            ("P","d2","d3"),
+            ("b","f8","c5")
+        ]
+    },
+
+    "Queen's Gambit": {
+        "side": "white",
+        "moves": [
+            ("P","d2","d4"),
+            ("p","d7","d5"),
+            ("P","c2","c4"),
+            ("p","e7","e6"),
+            ("N","b1","c3"),
+            ("n","g8","f6"),
+            ("B","c1","g5"),
+            ("B","f8","e7")
+        ]
+    },
+
+    "London System": {
+        "side": "white",
+        "moves": [
+            ("P","d2","d4"),
+            ("p","d7","d5"),
+            ("B","c1","f4"),
+            ("n","g8","f6"),
+            ("P","e2","e3"),
+            ("P","c2","c3"),
+            ("N","g1","f3"),
+            ("B","f1","d3")
+        ]
+    },
+
+    "Vienna Game": {
+        "side": "white",
+        "moves": [
+            ("P","e2","e4"),
+            ("p","e7","e5"),
+            ("N","b1","c3"),
+            ("n","g8","f6"),
+            ("P","f2","f4"),
+            ("p","d7","d5")
+        ]
+    },
+
+    "Scotch Game": {
+        "side": "white",
+        "moves": [
+            ("P","e2","e4"),
+            ("p","e7","e5"),
+            ("N","g1","f3"),
+            ("n","b8","c6"),
+            ("P","d2","d4"),
+            ("p","e5","d4"),
+            ("N","f3","d4")
+        ]
+    },
+
+    "Sicilian Defense": {
+        "side": "black",
+        "moves": [
+            ("P","e2","e4"),
+            ("p","c7","c5"),
+            ("N","g1","f3"),
+            ("p","d7","d6"),
+            ("P","d2","d4"),
+            ("p","c5","d4"),
+            ("N","f3","d4"),
+            ("n","g8","f6")
+        ]
+    },
+
+    "Caro-Kann Defense": {
+        "side": "black",
+        "moves": [
+            ("P","e2","e4"),
+            ("p","c7","c6"),
+            ("P","d2","d4"),
+            ("p","d7","d5"),
+            ("N","b1","c3"),
+            ("p","d5","e4"),
+            ("N","c3","e4")
+        ]
+    },
+
+    "French Defense": {
+        "side": "black",
+        "moves": [
+            ("P","e2","e4"),
+            ("p","e7","e6"),
+            ("P","d2","d4"),
+            ("p","d7","d5"),
+            ("N","b1","c3"),
+            ("n","g8","f6"),
+            ("B","c1","g5")
+        ]
+    },
+
+    "King's Indian Defense": {
+        "side": "black",
+        "moves": [
+            ("P","d2","d4"),
+            ("n","g8","f6"),
+            ("P","c2","c4"),
+            ("p","g7","g6"),
+            ("N","b1","c3"),
+            ("b","f8","g7"),
+            ("P","e2","e4"),
+            ("p","d7","d6"),
+            ("N","g1","f3")
+        ]
+    },
+
+    "Pirc Defense": {
+        "side": "black",
+        "moves": [
+            ("P","e2","e4"),
+            ("p","d7","d6"),
+            ("P","d2","d4"),
+            ("n","g8","f6"),
+            ("N","b1","c3"),
+            ("p","g7","g6"),
+            ("B","f1","e2"),
+            ("b","f8","g7"),
+            ("N","g1","f3")
+        ]
+    }
+}
+
+# =============================================================================================================================
+# BOARD SETUP
+# ==========================================================================================================================
+
+def new_board():
+    return {
+        "a8":"r","b8":"n","c8":"b","d8":"q","e8":"k","f8":"b","g8":"n","h8":"r",
+        "a7":"p","b7":"p","c7":"p","d7":"p","e7":"p","f7":"p","g7":"p","h7":"p",
+        "a6":"","b6":"","c6":"","d6":"","e6":"","f6":"","g6":"","h6":"",
+        "a5":"","b5":"","c5":"","d5":"","e5":"","f5":"","g5":"","h5":"",
+        "a4":"","b4":"","c4":"","d4":"","e4":"","f4":"","g4":"","h4":"",
+        "a3":"","b3":"","c3":"","d3":"","e3":"","f3":"","g3":"","h3":"",
+        "a2":"P","b2":"P","c2":"P","d2":"P","e2":"P","f2":"P","g2":"P","h2":"P",
+        "a1":"R","b1":"N","c1":"B","d1":"Q","e1":"K","f1":"B","g1":"N","h1":"R",
+    }
+
+def move_piece(board, piece, frm, to):
+    board[to] = piece
+    board[frm] = ""
+    return board
+
+# =======================================================================================================================================
+# INPUT
+# ====================================================================================================================================
+
+opening = st.selectbox(
+    "Choose Opening",
+    list(visual_openings.keys())
+)
+
+data = visual_openings[opening]
+moves = data["moves"]
+
+# ==================================================================================================================================
+# STATE
+# =================================================================================================================================
+
+if "step" not in st.session_state:
+    st.session_state.step = 0
+
+if "board" not in st.session_state:
+    st.session_state.board = new_board()
+
+if "current" not in st.session_state:
+    st.session_state.current = opening
+
+# reset on change
+if st.session_state.current != opening:
+    st.session_state.step = 0
+    st.session_state.board = new_board()
+    st.session_state.current = opening
+
+# ============================================================================================================================
+# CONTROLS
+# ===================================================================================================================================
+
+col1, col2, col3 = st.columns([1,2,1])
+
+with col1:
+    if st.button("⬅ Back"):
+        if st.session_state.step > 0:
+            st.session_state.step -= 1
+            st.session_state.board = new_board()
+            for i in range(st.session_state.step):
+                p,f,t = moves[i]
+                st.session_state.board = move_piece(st.session_state.board, p,f,t)
+
+with col3:
+    if st.button("Next ➡"):
+        if st.session_state.step < len(moves):
+            p,f,t = moves[st.session_state.step]
+            st.session_state.board = move_piece(st.session_state.board, p,f,t)
+            st.session_state.step += 1
+
+# ==============================================================================================================================
+# FLIP BOARD IF BLACK 
+# =======================================================================================================================
+
+board_side = data["side"]
+flip = board_side == "black"
+
+display_ranks = ranks[::-1] if flip else ranks
+display_files = files[::-1] if flip else files
+
+# ==========================================================================================================
+# BOARD RENDER 
+# ====================================================================================
+
+st.subheader(f"{opening} Board")
+
+last_move = None
+if st.session_state.step > 0:
+    last_move = moves[st.session_state.step - 1]
+
+square_size = 70
+
+for r_i, r in enumerate(display_ranks):
+
+    row = st.container()
+    cols = row.columns(8, gap="small")  # Streamlit-safe gap control
+
+    for c_i, f in enumerate(display_files):
+
+        sq = f + r
+        piece = st.session_state.board[sq]
+
+        is_light = (r_i + c_i) % 2 == 0
+        bg = "#f0d9b5" if is_light else "#b58863"
+
+        symbol = ""
+        if piece in WHITE:
+            symbol = piece_unicode[piece]
+        elif piece in BLACK:
+            symbol = piece_unicode[piece]
+
+        if last_move:
+            p, frm, to = last_move
+            if sq == frm:
+                bg = "#ffeb3b"
+            elif sq == to:
+                bg = "#7CFC00"
+
+        cols[c_i].markdown(
+            f"""
+            <div style="
+                width:{square_size}px;
+                height:{square_size}px;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                font-size:34px;
+                background:{bg};
+                border-radius:0px;
+                margin:0;
+                padding:0;
+            ">
+                {symbol}
+            </div>
+            """,
+            unsafe_allow_html=True 
+        ) 
+        
+# ============================================================================================================
+# INFO
+# ======================================================================================================================
+
+st.write(f"Move: {st.session_state.step} / {len(moves)}")
+
