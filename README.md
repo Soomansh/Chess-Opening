@@ -1,5 +1,12 @@
 ♟️ Chess Opening Decider
 
+![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)
+![Streamlit](https://img.shields.io/badge/Streamlit-App-red.svg)
+![python-chess](https://img.shields.io/badge/python--chess-Engine-lightgrey.svg)
+![Status](https://img.shields.io/badge/Status-Active-success.svg)
+![Type](https://img.shields.io/badge/Project-Chess%20Trainer-black.svg)
+![Level](https://img.shields.io/badge/Level-Beginner%20Friendly-brightgreen.svg)
+
 A Streamlit based interactive chess application that helps players explore, understand, and choose chess openings based on their playing style, skill level, and strategic preferences.
 
 This project goes beyond simple recommendations by visually demonstrating openings and allowing users to step through moves to better understand how positions develop into the middlegame.
