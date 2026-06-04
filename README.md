@@ -50,10 +50,64 @@ pip install streamlit python-chess
 
 streamlit run app.py
 
+Clone Repo:
+
+        git clone https://github.com/yourusername/chess-trainer.git
+
+        cd chess-trainer
+        
+Additionally install all other dependencies --> pip install streamlit chess
+
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 IMPORTANT NOTE ABOUT STOCKFISH: 
 This project provides both functional frontend and backend components. However, a full Chess.com-style Stockfish engine integration is not included by default. Users are free to extend the project by adding their own engine-based analysis or gameplay features.
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Stockfish Setup and How to Run
+
+Download python from: https://www.python.org/.
+
+        Open a terminal in your project folder and run:
+
+                pip install streamlit chess flask flask-cors
+
+        If you are only using Streamlit, you can skip Flask packages.
+
+        Download Stockfish from the official website: https://stockfishchess.org/download/
+
+        Extract the files
+        Locate the executable file (for example: stockfish.exe)
+        Move it to a known folder (recommended: inside your project folder)
+
+                Example path:
+
+                C:\Chess\stockfish\stockfish.exe
+                
+
+        Open your Python file and set the correct path:
+
+        STOCKFISH_PATH = "stockfish.exe"
+
+        STOCKFISH_PATH = "C:\\Chess\\stockfish\\stockfish.exe"
+
+
+        In your terminal, run:
+
+                streamlit run app.py
+
+        Then open the local URL shown in the terminal, usually:
+
+                http://localhost:8501
+
+        If your project includes the API backend, run:
+
+                python app.py
+
+        The server will start at:
+
+                http://127.0.0.1:5000
+
+
 
 Main Purpose/Objective:
 
