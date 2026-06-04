@@ -53,6 +53,8 @@ This project was built with:
 
 How to Run:
 
+NOTICE: app.py is now renamed to Opening_Quiz.py!!!
+
 pip install streamlit python-chess
 
 streamlit run app.py
