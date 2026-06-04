@@ -1,0 +1,65 @@
+import { useState } from "react";
+import { Chess } from "chess.js";
+import { Chessboard } from "react-chessboard";
+
+const API_URL = "http://127.0.0.1:5000/best-move";
+
+export default function App() {
+  const [game, setGame] = useState(new Chess());
+  const [thinking, setThinking] = useState(false);
+
+  // Send position to backend and get AI move
+  async function getAIMove(fen) {
+    const res = await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ fen }),
+    });
+
+    const data = await res.json();
+    return data.move;
+  }
+
+  // Handle player move
+  async function onDrop(source, target) {
+    if (thinking) return false;
+
+    const gameCopy = new Chess(game.fen());
+
+    const move = gameCopy.move({
+      from: source,
+      to: target,
+      promotion: "q",
+    });
+
+    if (!move) return false;
+
+    setGame(gameCopy);
+
+    setThinking(true);
+
+    try {
+      const aiMove = await getAIMove(gameCopy.fen());
+
+      if (aiMove) {
+        const from = aiMove.substring(0, 2);
+        const to = aiMove.substring(2, 4);
+
+        gameCopy.move({ from, to, promotion: "q" });
+        setGame(new Chess(gameCopy.fen()));
+      }
+    } catch (err) {
+      console.log("AI error:", err);
+    }
+
+    setThinking(false);
+    return true;
+  }
+
+  return (
+    <div style={{ textAlign: "center", marginTop: 40 }}>
+      <Chessboard position={game.fen()} onPieceDrop={onDrop} />
+      {thinking && <p>AI is thinking...</p>}
+    </div>
+  );
+}
