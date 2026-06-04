@@ -1,0 +1,70 @@
+import { useState } from "react";
+import { Chess } from "chess.js";
+import { Chessboard } from "react-chessboard";
+
+export default function App() {
+  const [game, setGame] = useState(() => new Chess());
+  const [thinking, setThinking] = useState(false);
+
+  async function makeAIMove(fen) {
+    const res = await fetch("http://127.0.0.1:5000/best-move", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ fen }),
+    });
+
+    const data = await res.json();
+    return data.move;
+  }
+
+  async function onPieceDrop(sourceSquare, targetSquare) {
+    if (thinking) return false;
+
+    const copy = new Chess(game.fen());
+
+    const move = copy.move({
+      from: sourceSquare,
+      to: targetSquare,
+      promotion: "q",
+    });
+
+    if (!move) return false;
+
+    const newFen = copy.fen();
+    setGame(new Chess(newFen));
+
+    setThinking(true);
+
+    try {
+      const aiMove = await makeAIMove(newFen);
+
+      if (aiMove) {
+        const aiGame = new Chess(newFen);
+
+        aiGame.move({
+          from: aiMove.slice(0, 2),
+          to: aiMove.slice(2, 4),
+          promotion: "q",
+        });
+
+        setGame(new Chess(aiGame.fen()));
+      }
+    } catch (err) {
+      console.log("AI error:", err);
+    }
+
+    setThinking(false);
+
+    return true;
+  }
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: 50 }}>
+      <Chessboard position={game.fen()} onPieceDrop={onPieceDrop} />
+
+      {thinking && <p>AI is thinking...</p>}
+    </div>
+  );
+}
