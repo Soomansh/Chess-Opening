@@ -1,0 +1,30 @@
+from flask import Flask, request, jsonify
+import chess
+import chess.engine
+
+app = Flask(__name__)
+
+# Path to Stockfish (change this if needed)
+ENGINE_PATH = "stockfish.exe"
+
+# Start engine once when server starts
+engine = chess.engine.SimpleEngine.popen_uci(ENGINE_PATH)
+
+
+@app.route("/best-move", methods=["POST"])
+def best_move():
+    # Get FEN from request
+    fen = request.json["fen"]
+
+    # Create board from FEN
+    board = chess.Board(fen)
+
+    # Ask Stockfish for best move
+    result = engine.play(board, chess.engine.Limit(depth=10))
+
+    # Return move in UCI format (e2e4, g1f3, etc.)
+    return jsonify({"move": result.move.uci()})
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
