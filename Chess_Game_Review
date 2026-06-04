@@ -1,0 +1,141 @@
+# ================================================================================================
+# CHESS REVIEW WITH ASSISANCE FROM AI
+# =================================================================================================
+
+import streamlit as st
+import chess
+import chess.pgn
+import chess.engine
+import chess.svg
+from io import StringIO
+
+STOCKFISH_PATH = r"C:\Users\narne\Downloads\stockfish-windows-x86-64-avx2 (1)\stockfish\stockfish-windows-x86-64-avx2.exe"
+
+st.set_page_config(page_title="Chess Review V6.1", layout="wide")
+
+# ENGINE =============================================================================================================================================
+
+@st.cache_resource
+def load_engine():
+    return chess.engine.SimpleEngine.popen_uci(STOCKFISH_PATH)
+
+engine = load_engine()
+
+
+@st.cache_data(show_spinner=False)
+def analyze(fen):
+    board = chess.Board(fen)
+    info = engine.analyse(board, chess.engine.Limit(depth=10))
+
+    score = info["score"].relative.score(mate_score=10000)
+    score = score if score is not None else 0
+
+    pv = []
+    temp = board.copy()
+
+    if "pv" in info:
+        for mv in info["pv"][:5]:
+            try:
+                pv.append(temp.san(mv))
+                temp.push(mv)
+            except:
+                break
+
+    best_move = info["pv"][0] if "pv" in info and info["pv"] else None
+
+    return score, pv, best_move
+
+
+# CLASSIFY==========================================================================================================================
+
+def classify(cpl):
+    if cpl <= 10: return "BEST"
+    if cpl <= 25: return "EXCELLENT"
+    if cpl <= 60: return "GREAT"
+    if cpl <= 120: return "GOOD"
+    if cpl <= 250: return "MISTAKE"
+    return "BLUNDER"
+
+
+# PNG FORMAT=============================================================================================================
+
+def load_game(text):
+    return chess.pgn.read_game(StringIO(text))
+
+
+# BUILD REVIEW===============================================================================================================================
+
+def build(game):
+    board = game.board()
+    review = []
+
+    for move in game.mainline_moves():
+        before, pv, best = analyze(board.fen())
+
+        san = board.san(move)
+        board.push(move)
+
+        after, _, _ = analyze(board.fen())
+
+        cpl = abs(after - before)
+        tag = classify(cpl)
+
+        review.append({
+            "san": san,
+            "fen": board.fen(),
+            "tag": tag,
+            "cpl": cpl,
+            "pv": pv
+        })
+
+    return review
+
+
+# UI===========================================================================================================================
+
+st.title("♟️ Chess Review")
+
+pgn = st.text_area("Paste PGN")
+file = st.file_uploader("Upload PGN")
+
+if st.button("Analyze"):
+
+    text = file.read().decode() if file else pgn
+
+    game = load_game(text)
+
+    if not game:
+        st.error("Invalid PGN")
+        st.stop()
+
+    st.session_state.review = build(game)
+    st.session_state.i = 0
+
+
+# DISPLAY=============================================================================================================
+
+review = st.session_state.get("review", [])
+
+if review:
+
+    i = st.session_state.get("i", 0)
+    board = chess.Board(review[max(0, i-1)]["fen"]) if i > 0 else chess.Board()
+
+    svg = chess.svg.board(board=board, size=600)
+    st.components.v1.html(svg, height=650)
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        if st.button("⬅"):
+            st.session_state.i = max(0, i-1)
+
+    with col2:
+        if st.button("➡"):
+            st.session_state.i = min(len(review)-1, i+1)
+
+    move = review[i]
+
+    st.subheader(move["tag"])
+    st.write(move["san"])
+    st.write("CPL:", int(move["cpl"]))
