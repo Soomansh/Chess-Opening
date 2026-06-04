@@ -1,0 +1,69 @@
+# =============================================== CHESS REVIEW V2 ================================================
+# -------------------------------------------------- GRAPH ------------------------------------------------------------------
+#AI was used in writing some of the code...
+
+import streamlit as st
+import chess
+import chess.pgn
+import chess.engine
+import matplotlib.pyplot as plt
+from io import StringIO
+
+STOCKFISH_PATH = r"YOUR_PATH"
+
+engine = chess.engine.SimpleEngine.popen_uci(STOCKFISH_PATH)
+
+
+# ---------------------------------------------------- ANALYZE -------------------------------------------------------------
+
+def eval_pos(board):
+    info = engine.analyse(board, chess.engine.Limit(depth=10))
+    return info["score"].relative.score(mate_score=10000) or 0
+
+
+# ---------------------------------------------------- BUILD ----------------------------------------------------------
+
+def build(game):
+    board = game.board()
+
+    evals = []
+    moves = []
+
+    for move in game.mainline_moves():
+        evals.append(eval_pos(board))
+        moves.append(board.san(move))
+        board.push(move)
+
+    return evals, moves
+
+
+# -------------------------------------------- UI -----------------------------------------
+
+st.title("♟️ Chess Review V2")
+
+pgn = st.text_area("PGN Input")
+
+if st.button("Analyze"):
+
+    game = chess.pgn.read_game(StringIO(pgn))
+
+    evals, moves = build(game)
+
+    st.session_state.evals = evals
+    st.session_state.moves = moves
+
+
+# ----------------------- DISPLAY -------------------------
+
+if "evals" in st.session_state:
+
+    st.subheader("Evaluation Graph")
+
+    fig, ax = plt.subplots()
+    ax.plot(st.session_state.evals)
+    st.pyplot(fig)
+
+    st.subheader("Moves List")
+
+    for i, m in enumerate(st.session_state.moves):
+        st.write(i+1, m)
