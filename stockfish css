@@ -1,0 +1,42 @@
+.board {
+  display: grid;
+  grid-template-columns: repeat(8, 70px);
+  grid-template-rows: repeat(8, 70px);
+  width: 560px;
+  height: 560px;
+  border: 2px solid black;
+}
+
+.square {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  user-select: none;
+}
+
+.light {
+  background: #f0d9b5;
+}
+
+.dark {
+  background: #b58863;
+}
+
+.check {
+  background: rgba(255, 0, 0, 0.5) !important;
+}
+
+@keyframes flash {
+  0% { background: red; }
+  50% { background: darkred; }
+  100% { background: red; }
+}
+
+.mate {
+  animation: flash 0.4s infinite;
+}
+
+.selected {
+  outline: 3px solid yellow;
+}
