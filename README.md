@@ -50,6 +50,10 @@ pip install streamlit python-chess
 
 streamlit run app.py
 
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+IMPORTANT NOTE ABOUT STOCKFISH: 
+This project provides both functional frontend and backend components. However, a full Chess.com-style Stockfish engine integration is not included by default. Users are free to extend the project by adding their own engine-based analysis or gameplay features.
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Main Purpose/Objective:
 
