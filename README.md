@@ -1,4 +1,4 @@
-♟️ Chess Opening Decider
+♟️ ChessHub
 
 ![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)
 ![Streamlit](https://img.shields.io/badge/Streamlit-App-red.svg)
