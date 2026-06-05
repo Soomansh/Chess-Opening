@@ -1,0 +1,62 @@
+import streamlit as st
+
+st.set_page_config(
+    page_title="Chess Hub",
+    page_icon="♟️",
+    layout="wide"
+)
+
+#HEADER================================================================================================================================
+
+st.title("♟️ Chess Hub")
+st.subheader("Learn • Train • Analyze • Improve")
+
+st.markdown("---")
+
+#INTRO================================================================================================================================
+st.write("""
+Welcome to your chess platform.
+
+Everything is connected here:
+- Learn openings in depth
+- Practice positions on a board
+- Play against Stockfish AI
+- Review full games like Chess.com
+""")
+
+st.markdown("---")
+
+#NAVIGATION =============================================================================================================
+st.header("Open Tools")
+
+col1, col2 = st.columns(2)
+
+with col1:
+    st.subheader("Learning")
+
+    st.page_link("pages/Chess_Quiz.py", label="Chess Quiz")
+    st.page_link("pages/1_Opening_Explorer.py", label="Opening Explorer")
+
+with col2:
+    st.subheader("Training & Analysis")
+
+    st.page_link("pages/2_Board_Visualizer.py", label="Board Visualizer")
+    st.page_link("pages/3_Play_vs_AI.py", label="Play vs AI")
+    st.page_link("pages/Review_Chess_Games.py", label="Chess Games Review")
+
+st.markdown("---")
+
+# Status===============================================================================================================
+st.header("What this platform does")
+
+st.info("""
+✔ Opening learning system  
+✔ Quiz-based training  
+✔ Board practice tools  
+✔ AI opponent (Stockfish)  
+✔ Full game review system  
+""")
+
+st.markdown("---")
+
+st.caption("♟️ Chess Hub • Python • Streamlit • Stockfish")
