@@ -1,0 +1,126 @@
+import streamlit as st
+import chess
+import chess.svg
+import json
+import random
+
+PUZZLE_PATH = r"C:\Users\**************\OneDrive\Desktop\Python\Raji Test\Basic\chess\puzzles.json"
+
+@st.cache_data
+def load_puzzles():
+    with open(PUZZLE_PATH, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+all_puzzles = load_puzzles()
+
+st.sidebar.title("Puzzle Settings")
+
+play_as = st.sidebar.selectbox(
+    "Play As",
+    ["Auto", "White", "Black"]
+)
+
+difficulty = st.sidebar.selectbox(
+    "Difficulty",
+    ["All", "Easy", "Medium", "Hard"]
+)
+
+mode = st.sidebar.selectbox(
+    "Puzzle Type",
+    ["All", "Tactics", "Endgame", "Mate"]
+)
+
+show_hint = st.sidebar.checkbox("Show Hint")
+show_solution = st.sidebar.checkbox("Show Solution")
+
+def filter_puzzles(puzzles):
+    filtered = []
+
+    for p in puzzles:
+        rating = int(p.get("rating", 1500))
+
+        themes = p.get("themes", [])
+        if isinstance(themes, list):
+            themes = " ".join(themes)
+
+        themes = str(themes).lower()
+
+        if difficulty == "Easy" and rating > 1400:
+            continue
+
+        if difficulty == "Medium" and not (1400 <= rating <= 2000):
+            continue
+
+        if difficulty == "Hard" and rating < 2000:
+            continue
+
+        if mode != "All":
+            if mode.lower() not in themes:
+                continue
+
+        filtered.append(p)
+
+    return filtered if filtered else puzzles
+
+filtered_puzzles = filter_puzzles(all_puzzles)
+
+if "puzzle" not in st.session_state:
+    st.session_state.puzzle = random.choice(filtered_puzzles)
+
+if "board" not in st.session_state:
+    st.session_state.board = chess.Board(st.session_state.puzzle["fen"])
+
+puzzle = st.session_state.puzzle
+board = st.session_state.board
+
+solution = puzzle.get("moves", [])
+
+player_color = play_as
+
+if play_as == "Auto":
+    player_color = "White" if board.turn else "Black"
+
+st.title("♟ Chess Puzzle Trainer (V2)")
+
+svg = chess.svg.board(
+    board=board,
+    size=550,
+    orientation=chess.WHITE if player_color == "White" else chess.BLACK
+)
+
+st.image(svg)
+
+st.write("Puzzle Rating:", puzzle.get("rating", "N/A"))
+
+if show_hint and solution:
+    st.info(f"Hint: {solution[0]}")
+
+if show_solution:
+    st.subheader("Solution")
+
+    for i, move in enumerate(solution):
+        st.write(f"{i+1}. {move}")
+
+move_text = st.text_input("Enter move (UCI format)")
+
+if st.button("Play Move"):
+    try:
+        move = chess.Move.from_uci(move_text)
+
+        if move in board.legal_moves:
+            board.push(move)
+            st.success("Move played.")
+        else:
+            st.error("Illegal move.")
+
+    except:
+        st.error("Invalid move format.")
+
+if st.button("Reset Position"):
+    st.session_state.board = chess.Board(puzzle["fen"])
+    st.rerun()
+
+if st.button("Next Puzzle"):
+    st.session_state.puzzle = random.choice(filtered_puzzles)
+    st.session_state.board = chess.Board(st.session_state.puzzle["fen"])
+    st.rerun()
