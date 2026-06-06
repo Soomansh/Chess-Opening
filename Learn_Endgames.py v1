@@ -1,0 +1,87 @@
+import streamlit as st
+import chess
+import chess.svg
+
+st.set_page_config(page_title="Learn Endgames", layout="wide")
+
+st.title("♟️ Learn Endgames")
+
+# -----------------------------------------------------------------------
+# LESSONS
+# --------------------------------------------------------------------------
+
+LESSONS = {
+    "Opposition": {
+        "fen": "8/8/8/3k4/8/3K4/8/8 w - - 0 1",
+        "text": """
+Opposition is a key idea in king endgames.
+
+When two kings face each other with one square in between, the player who does NOT have the move often has the advantage.
+
+It is used to:
+- Win king and pawn endgames
+- Force the enemy king backward
+- Create zugzwang positions
+"""
+    },
+
+    "Key Squares": {
+        "fen": "8/8/8/8/8/8/4P3/4K3 w - - 0 1",
+        "text": """
+Key squares decide whether a pawn can be promoted.
+
+If your king reaches key squares, the pawn will usually promote safely.
+
+They are essential for calculating pawn endgames quickly.
+"""
+    },
+
+    "Lucena Position": {
+        "fen": "8/8/8/8/8/8/1K1R4/1k6 w - - 0 1",
+        "text": """
+The Lucena Position is a winning rook endgame.
+
+The winning idea is to build a bridge using the rook to block checks and promote the pawn.
+
+It is one of the most important rook endgames in chess.
+"""
+    },
+
+    "Philidor Defense": {
+        "fen": "8/8/8/8/8/8/3r4/3RK3 w - - 0 1",
+        "text": """
+The Philidor Defense is a drawing technique in rook endgames.
+
+The defending rook stays active and prevents the king from advancing.
+
+It is one of the most important defensive techniques in chess.
+"""
+    },
+
+    "Triangulation": {
+        "fen": "8/8/8/3k4/8/3K4/8/8 w - - 0 1",
+        "text": """
+Triangulation is a way to lose a move to gain a better position.
+
+The king moves in a triangle shape to put the opponent in zugzwang.
+
+It is often used in winning king endgames.
+"""
+    }
+}
+
+# -----------------------------------------------------------------------------------
+# UI
+# -----------------------------------------------------------------------------------------
+
+choice = st.selectbox("Choose Endgame", list(LESSONS.keys()))
+
+lesson = LESSONS[choice]
+
+board = chess.Board(lesson["fen"])
+
+st.components.v1.html(chess.svg.board(board=board, size=650), height=680)
+
+st.write(lesson["text"])
+
+st.success("Study the idea before trying puzzles.")
