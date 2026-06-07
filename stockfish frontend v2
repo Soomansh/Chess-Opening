@@ -7,7 +7,7 @@ export default function App() {
   const [thinking, setThinking] = useState(false);
 
   async function makeAIMove(fen) {
-    const res = await fetch("http://127.0.0.1:5000/best-move", {
+    const res = await fetch("http://127.0.0.1:5000/best-move", { 
       method: "POST",
       headers: {
         "Content-Type": "application/json",
