@@ -48,7 +48,7 @@ export default function App() {
         gameCopy.move({ from, to, promotion: "q" });
         setGame(new Chess(gameCopy.fen()));
       }
-    } catch (err) {
+    } catch (err) { 
       console.log("AI error:", err);
     }
 
