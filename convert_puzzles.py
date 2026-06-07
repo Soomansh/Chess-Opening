@@ -7,7 +7,7 @@ OUTPUT = r"C:\Users\********\OneDrive\Desktop\Python\******** Test\Basic\chess\p
 INPUT = r"C:\chess_data\lichess_db_puzzle.csv"
 MAX_PUZZLES = 10000
 
-puzzles = []
+puzzles = [] 
 
 with open(INPUT, "r", encoding="utf-8") as f:
     reader = csv.reader(f)
