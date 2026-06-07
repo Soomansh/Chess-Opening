@@ -6,7 +6,7 @@ st.set_page_config(
     page_title="Learn Endgames",
     layout="wide"
 )
-
+ 
 st.title("Learn Endgames")
 
 LESSONS = {
