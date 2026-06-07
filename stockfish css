@@ -32,7 +32,7 @@
   50% { background: darkred; }
   100% { background: red; }
 }
-
+ 
 .mate {
   animation: flash 0.4s infinite;
 }
