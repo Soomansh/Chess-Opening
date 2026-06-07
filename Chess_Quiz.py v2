@@ -11,7 +11,7 @@ st.write("Recommends chess openings based on your style and skill level.")
 # User inputs
 #---------------------------------------------------------------------------------------------------------------------------------------
 
-skill = st.selectbox("Skill level", ["Beginner", "Intermediate", "Advanced"])
+skill = st.selectbox("Skill level", ["Beginner", "Intermediate", "Advanced"]) 
 
 style = st.selectbox("Play style", ["Defensive", "Positional", "Aggressive"])
 
