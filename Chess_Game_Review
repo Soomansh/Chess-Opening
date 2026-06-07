@@ -8,7 +8,7 @@ import chess.pgn
 import chess.engine
 import chess.svg
 from io import StringIO
-
+ 
 STOCKFISH_PATH = r"C:\Users\narne\Downloads\stockfish-windows-x86-64-avx2 (1)\stockfish\stockfish-windows-x86-64-avx2.exe"
 
 st.set_page_config(page_title="Chess Review V6.1", layout="wide")
