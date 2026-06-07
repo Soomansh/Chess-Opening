@@ -6,7 +6,7 @@ import random
 
 PUZZLE_PATH = r"C:\Users\**************\OneDrive\Desktop\Python\Raji Test\Basic\chess\puzzles.json"
 
-@st.cache_data
+@st.cache_data 
 def load_puzzles():
     with open(PUZZLE_PATH, "r", encoding="utf-8") as f:
         return json.load(f)
