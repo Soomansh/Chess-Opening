@@ -13,7 +13,7 @@ STOCKFISH_PATH = r"YOUR_PATH"
 
 engine = chess.engine.SimpleEngine.popen_uci(STOCKFISH_PATH)
 
-
+ 
 # ---------------------------------------------------- ANALYZE -------------------------------------------------------------
 
 def eval_pos(board):
