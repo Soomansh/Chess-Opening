@@ -6,7 +6,7 @@ st.write("Answer a few questions and get your best chess openings.")
 # ========================================================================================================================================
 # QUIZ
 # ==============================================================================================================================================
-
+ 
 skill = st.selectbox("Skill level", ["Beginner", "Intermediate", "Advanced"])
 style = st.selectbox("Play style", ["Defensive", "Positional", "Aggressive"])
 color = st.selectbox("Color", ["White", "Black"])
