@@ -3,7 +3,7 @@ import { Chess } from "chess.js";
 import { Chessboard } from "react-chessboard";
 
 const API_URL = "http://127.0.0.1:5000/best-move";
-
+ 
 export default function App() {
   const [game, setGame] = useState(new Chess());
   const [thinking, setThinking] = useState(false);
