@@ -1,5 +1,5 @@
 import streamlit as st
-import chess
+import chess 
 import chess.svg
 import json
 import random
