@@ -65,7 +65,7 @@ Triangulation is a way to lose a move to gain a better position.
 
 The king moves in a triangle shape to put the opponent in zugzwang.
 
-It is often used in winning king endgames.
+It is often used in winning king endgames. 
 """
     }
 }
