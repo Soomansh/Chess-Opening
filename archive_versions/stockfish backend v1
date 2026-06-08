@@ -4,7 +4,7 @@ import chess.engine
 
 app = Flask(__name__)
 
-# Path to Stockfish (change this if needed)
+# Path to Stockfish (change this if needed) 
 ENGINE_PATH = "stockfish.exe"
 
 # Start engine once when server starts
