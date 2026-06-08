@@ -2,7 +2,7 @@ import csv
 import json
 
 INPUT = r"C:\chess_data\lichess_db_puzzle.csv"
-OUTPUT = r"C:\Users\********\OneDrive\Desktop\Python\******** Test\Basic\chess\puzzles.json"
+OUTPUT = r"C:\Users\********\OneDrive\Desktop\Python\********Test\Basic\chess\puzzles.json"
 
 INPUT = r"C:\chess_data\lichess_db_puzzle.csv"
 MAX_PUZZLES = 10000
