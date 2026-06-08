@@ -6,7 +6,7 @@
   height: 560px;
   border: 2px solid black;
 }
-
+ 
 .square {
   display: flex;
   align-items: center;
