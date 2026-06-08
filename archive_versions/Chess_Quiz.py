@@ -3,7 +3,7 @@ import streamlit as st
 #--------------------------------------------------------------------------------------------------------------------
 #Starting of the homepage
 #----------------------------------------------------------------------------------------------------------------
-
+ 
 st.title( " Chess Opening AI")
 st.write( "A simple AI style chess opening recommender based on your style of play.")
  
