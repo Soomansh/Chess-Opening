@@ -1,6 +1,6 @@
 import zstandard as zstd
 
-input_file = r"C:\Users\*********\Downloads\lichess_db_puzzle.csv.zst"
+input_file = r"C:\Users\********* \Downloads\lichess_db_puzzle.csv.zst"
 output_file = r"C:\chess_data\lichess_db_puzzle.csv"
 
 dctx = zstd.ZstdDecompressor()
