@@ -4,7 +4,7 @@
 
 import streamlit as st
 import chess
-import chess.pgn
+import chess.pgn 
 import chess.engine
 import matplotlib.pyplot as plt
 from io import StringIO
