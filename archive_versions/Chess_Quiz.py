@@ -11,7 +11,7 @@ st.write( "A simple AI style chess opening recommender based on your style of pl
 #Make decisions based on user inputs
 #----------------------------------------------------------------------------------------------------
 
-#Decide skill level
+#Decide skill levels
 skill = st.selectbox(
 "what is your current chess skill level?",
 ["Beginner", "Intermediate", "Advanced" ] )
