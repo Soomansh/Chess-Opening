@@ -6,164 +6,75 @@ st.set_page_config(
     layout="wide"
 )
 
-# ---------------- SESSION STATE ----------------
-if "page" not in st.session_state:
-    st.session_state.page = "Home"
+# ---------------- HEADER ----------------
+st.title("♟️ Chess Hub")
+st.subheader("Learn • Train • Analyze • Improve")
 
+st.markdown("---")
 
-def go(page_name):
-    st.session_state.page = page_name
+# ---------------- INTRO ----------------
+st.write("""
+Welcome to your chess platform.
 
+Everything is connected here:
+- Learn openings in depth
+- Practice positions on a board 
+- Play against Stockfish AI
+- Review full games like Chess.com
+""")
 
-page = st.session_state.page
+st.markdown("---")
 
+# ---------------- NAVIGATION ----------------
+st.header("Open Tools")
 
-# ================= HOME =================
-if page == "Home":
+col1, col2 = st.columns(2)
 
-    st.title("♟️ Chess Hub")
-    st.subheader("Learn • Train • Analyze • Improve")
+with col1:
+    st.subheader("Learning")
 
-    st.markdown("---")
+    if st.button("♟️ Chess Quiz"):
+     st.switch_page("Chess_Quiz.py")
 
-    st.write("""
-    Welcome to your chess platform.
+if st.button("Opening Explorer"):
+    st.switch_page("Opening_Explorer.py")
 
-    Everything is connected here:
-    - Learn openings in depth
-    - Practice positions on a board 
-    - Play against Stockfish AI
-    - Review full games like Chess.com
-    """)
+with col2:
+    st.subheader("Training & Analysis")
 
-    st.markdown("---")
+    if st.button("Board Visualizer"):
+     st.switch_page("Board_Visualizer.py")
 
-    st.header("Open Tools")
+if st.button("Play vs AI"):
+    st.switch_page("Play_Against_Ai.py")
 
-    col1, col2 = st.columns(2)
+if st.button("Chess Games Review"):
+    st.switch_page("Chess_Game_Review.py")
 
-    with col1:
-        st.subheader("Learning")
+if st.button("Endgame Puzzles"):
+    st.switch_page("Endgame_Puzzles.py")
 
-        if st.button("♟️ Chess Quiz"):
-            go("Chess_Quiz")
-            st.rerun()
+if st.button("Learn Endgames"):
+    st.switch_page("Learn_Endgames.py")
 
-        if st.button("Opening Explorer"):
-            go("Opening_Explorer")
-            st.rerun()
+if st.button("Guess the Elo"):
+   st.switch_page("6_Guess_The_Elo.py")
 
-        if st.button("📊 Guess the Elo"):
-            go("Guess_Elo")
-            st.rerun()
+st.markdown("---")
 
-    with col2:
-        st.subheader("Training & Analysis")
+# ---------------- STATUS ----------------
+st.header("What this platform does")
 
-        if st.button("Board Visualizer"):
-            go("Board_Visualizer")
-            st.rerun()
+st.info("""
+1. Opening learning system  
+2. Quiz-based training  
+3. Board practice tools  
+4. AI opponent (Stockfish)  
+5. Full game review system  
+6. Endgame puzzles  
+7. Endgame tactics learning system  
+""")
 
-        if st.button("Play vs AI"):
-            go("Play_AI")
-            st.rerun()
+st.markdown("---")
 
-        if st.button("Chess Games Review"):
-            go("Game_Review")
-            st.rerun()
-
-        if st.button("Endgame Puzzles"):
-            go("Endgames")
-            st.rerun()
-
-        if st.button("Learn Endgames"):
-            go("Learn_Endgames")
-            st.rerun()
-
-
-# ================= CHESS QUIZ =================
-elif page == "Chess_Quiz":
-    st.title("♟️ Chess Quiz")
-
-    st.write("Your Chess Quiz app goes here.")
-
-    if st.button("⬅ Back Home"):
-        go("Home")
-        st.rerun()
-
-
-# ================= OPENING =================
-elif page == "Opening_Explorer":
-    st.title("📖 Opening Explorer")
-
-    st.write("Your Opening Explorer app goes here.")
-
-    if st.button("⬅ Back Home"):
-        go("Home")
-        st.rerun()
-
-
-# ================= GUESS ELO =================
-elif page == "Guess_Elo":
-    st.title("📊 Guess The Elo")
-
-    st.write("Your Guess The Elo app goes here.")
-
-    if st.button("⬅ Back Home"):
-        go("Home")
-        st.rerun()
-
-
-# ================= BOARD =================
-elif page == "Board_Visualizer":
-    st.title("📊 Board Visualizer")
-
-    st.write("Your Board Visualizer goes here.")
-
-    if st.button("⬅ Back Home"):
-        go("Home")
-        st.rerun()
-
-
-# ================= AI =================
-elif page == "Play_AI":
-    st.title("♜ Play vs AI")
-
-    st.write("Your AI chess game goes here.")
-
-    if st.button("⬅ Back Home"):
-        go("Home")
-        st.rerun()
-
-
-# ================= REVIEW =================
-elif page == "Game_Review":
-    st.title("📊 Game Review")
-
-    st.write("Your Game Review goes here.")
-
-    if st.button("⬅ Back Home"):
-        go("Home")
-        st.rerun()
-
-
-# ================= ENDGAMES =================
-elif page == "Endgames":
-    st.title("🧩 Endgame Puzzles")
-
-    st.write("Your Endgame Puzzles go here.")
-
-    if st.button("⬅ Back Home"):
-        go("Home")
-        st.rerun()
-
-
-# ================= LEARN ENDGAMES =================
-elif page == "Learn_Endgames":
-    st.title("📚 Learn Endgames")
-
-    st.write("Your Endgame Lessons go here.")
-
-    if st.button("⬅ Back Home"):
-        go("Home")
-        st.rerun()
+st.caption("♟️ Chess Hub • Python • Streamlit • Stockfish")
