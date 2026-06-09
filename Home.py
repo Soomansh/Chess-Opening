@@ -6,14 +6,13 @@ st.set_page_config(
     layout="wide"
 )
 
-# ---------------- SESSION NAV ----------------
+# ---------------- SESSION STATE ----------------
 if "page" not in st.session_state:
     st.session_state.page = "Home"
 
 
 def go(page_name):
     st.session_state.page = page_name
-    st.rerun()
 
 
 # ---------------- HOME PAGE ----------------
@@ -29,7 +28,7 @@ if st.session_state.page == "Home":
 
     Everything is connected here:
     - Learn openings in depth
-    - Practice positions on a board
+    - Practice positions on a board 
     - Play against Stockfish AI
     - Review full games like Chess.com
     """)
@@ -76,6 +75,15 @@ elif st.session_state.page == "Opening_Explorer":
     st.button("⬅ Back Home", on_click=go, args=("Home",))
 
 
+# ---------------- GUESS THE ELO ----------------
+elif st.session_state.page == "Guess_Elo":
+    st.title("📊 Guess The Elo")
+
+    st.write("Your Guess The Elo app goes here.")
+
+    st.button("⬅ Back Home", on_click=go, args=("Home",))
+
+
 # ---------------- BOARD VISUALIZER ----------------
 elif st.session_state.page == "Board_Visualizer":
     st.title("📊 Board Visualizer")
@@ -116,15 +124,6 @@ elif st.session_state.page == "Endgames":
 elif st.session_state.page == "Learn_Endgames":
     st.title("📚 Learn Endgames")
 
-    st.write("Your Endgame lessons go here.")
-
-    st.button("⬅ Back Home", on_click=go, args=("Home",))
-
-
-# ---------------- GUESS ELO ----------------
-elif st.session_state.page == "Guess_Elo":
-    st.title("📊 Guess The Elo")
-
-    st.write("Your Guess the Elo game goes here.")
+    st.write("Your Endgame Lessons go here.")
 
     st.button("⬅ Back Home", on_click=go, args=("Home",))
