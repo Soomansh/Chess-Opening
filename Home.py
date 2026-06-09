@@ -5,14 +5,14 @@ st.set_page_config(
     page_icon="♟️",
     layout="wide"
 )
- 
-# HEADER ============================================================================================================
+
+# ------------------------------------- HEADER ----------------------------------------------
 st.title("♟️ Chess Hub")
 st.subheader("Learn • Train • Analyze • Improve")
 
 st.markdown("---")
 
-#INTRO====================================================================================================================
+# ---------------------------------------- INTRO -----------------------------------
 st.write("""
 Welcome to your chess platform.
 
@@ -25,7 +25,7 @@ Everything is connected here:
 
 st.markdown("---")
 
-# NAVIGATION =====================================================================================================================
+# --------------------------------------------- NAVIGATION ---------------------------------------------------
 st.header("Open Tools")
 
 col1, col2 = st.columns(2)
@@ -33,21 +33,33 @@ col1, col2 = st.columns(2)
 with col1:
     st.subheader("Learning")
 
-    st.page_link("pages/Chess_Quiz.py", label="Chess Quiz")
-    st.page_link("pages/1_Opening_Explorer.py", label="Opening Explorer")
+    if st.button("♟️ Chess Quiz"):
+        st.switch_page("pages/Chess_Quiz.py")
+
+    if st.button("Opening Explorer"):
+        st.switch_page("pages/1_Opening_Explorer.py")
 
 with col2:
     st.subheader("Training & Analysis")
 
-    st.page_link("pages/2_Board_Visualizer.py", label="Board Visualizer")
-    st.page_link("pages/3_Play_vs_AI.py", label="Play vs AI")
-    st.page_link("pages/Review_Chess_Games.py", label="Chess Games Review")
-    st.page_link("pages/4_Endgame_Puzzles.py", label="Endgame Puzzles")
-    st.page_link("pages/5_Learn_Endgames.py",label="Learn Endgames")
+    if st.button("Board Visualizer"):
+        st.switch_page("pages/2_Board_Visualizer.py")
+
+    if st.button("Play vs AI"):
+        st.switch_page("pages/3_Play_vs_AI.py")
+
+    if st.button("Chess Games Review"):
+        st.switch_page("pages/Review_Chess_Games.py")
+
+    if st.button("Endgame Puzzles"):
+        st.switch_page("pages/4_Endgame_Puzzles.py")
+
+    if st.button("Learn Endgames"):
+        st.switch_page("pages/5_Learn_Endgames.py")
 
 st.markdown("---")
 
-#PROJECT DESCRIPTION ======================================================================================================
+# -------------------------------------- STATUS ---------------------------------------
 st.header("What this platform does")
 
 st.info("""
@@ -55,8 +67,8 @@ st.info("""
 2. Quiz-based training  
 3. Board practice tools  
 4. AI opponent (Stockfish)  
-5. Full game review system
-6. Endgame puzzles
+5. Full game review system  
+6. Endgame puzzles  
 7. Endgame tactics learning system  
 """)
 
