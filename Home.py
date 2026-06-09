@@ -6,57 +6,75 @@ st.set_page_config(
     layout="wide"
 )
 
+# ---------------- HEADER ----------------
 st.title("♟️ Chess Hub")
 st.subheader("Learn • Train • Analyze • Improve")
 
 st.markdown("---")
 
+# ---------------- INTRO ----------------
 st.write("""
 Welcome to your chess platform.
 
 Everything is connected here:
-
 - Learn openings in depth
-- Practice positions on a board
+- Practice positions on a board 
 - Play against Stockfish AI
 - Review full games like Chess.com
 """)
 
 st.markdown("---")
 
+# ---------------- NAVIGATION ----------------
 st.header("Open Tools")
 
-st.success("""
-Use the sidebar on the left to navigate between all Chess Hub tools.
+col1, col2 = st.columns(2)
 
-Available pages:
-• Chess Quiz
-• Opening Explorer
-• Board Visualizer
-• Play vs AI
-• Endgame Puzzles
-• Learn Endgames
-• Guess The Elo
-• Review Chess Games
-""")
+with col1:
+    st.subheader("Learning")
+
+    if st.button("♟️ Chess Quiz"):
+     st.switch_page("Chess_Quiz.py")
+
+if st.button("Opening Explorer"):
+    st.switch_page("Opening_Explorer.py")
+
+with col2:
+    st.subheader("Training & Analysis")
+
+    if st.button("Board Visualizer"):
+     st.switch_page("Board_Visualizer.py")
+
+if st.button("Play vs AI"):
+    st.switch_page("Play_Against_Ai.py")
+
+if st.button("Chess Games Review"):
+    st.switch_page("Chess_Game_Review.py")
+
+if st.button("Endgame Puzzles"):
+    st.switch_page("Endgame_Puzzles.py")
+
+if st.button("Learn Endgames"):
+    st.switch_page("Learn_Endgames.py")
+
+if st.button("Guess the Elo"):
+   st.switch_page("6_Guess_The_Elo.py")
 
 st.markdown("---")
 
+# ---------------- STATUS ----------------
 st.header("What this platform does")
 
 st.info("""
-1. Opening learning system
-2. Quiz-based training
-3. Board practice tools
-4. AI opponent (Stockfish)
-5. Full game review system
-6. Endgame puzzles
-7. Endgame learning system
-8. Guess the Elo training
+1. Opening learning system  
+2. Quiz-based training  
+3. Board practice tools  
+4. AI opponent (Stockfish)  
+5. Full game review system  
+6. Endgame puzzles  
+7. Endgame tactics learning system  
 """)
 
 st.markdown("---")
-
-st.write("Streamlit version:", st.__version__)
 
 st.caption("♟️ Chess Hub • Python • Streamlit • Stockfish")
