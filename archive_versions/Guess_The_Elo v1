@@ -1,0 +1,61 @@
+import streamlit as st
+import chess
+import chess.pgn
+import chess.svg
+import random
+
+st.set_page_config(page_title="Guess The Elo", layout="wide")
+
+PGN_PATH = "games.pgn"
+MAX_GAMES = 200
+
+
+@st.cache_data
+def load_games(path, max_games=200):
+    games = []
+    with open(path, encoding="utf-8", errors="ignore") as pgn:
+        count = 0
+        while count < max_games:
+            game = chess.pgn.read_game(pgn)
+            if game is None:
+                break
+
+            try:
+                white_elo = int(game.headers.get("WhiteElo", 0))
+                black_elo = int(game.headers.get("BlackElo", 0))
+            except:
+                continue
+
+            moves = list(game.mainline_moves())
+            if len(moves) < 10:
+                continue
+
+            games.append({
+                "moves": moves,
+                "white_elo": white_elo,
+                "black_elo": black_elo,
+                "avg_elo": (white_elo + black_elo) // 2,
+            })
+
+            count += 1
+
+    return games
+
+
+def elo_bucket(elo):
+    if elo < 1200:
+        return "Beginner"
+    elif elo < 1800:
+        return "Intermediate"
+    return "Advanced"
+
+
+games = load_games(PGN_PATH, MAX_GAMES)
+
+st.title("Guess The Elo")
+
+game = random.choice(games)
+moves = game["moves"]
+
+st.write("Guess the Elo of this game!")
+st.write("Moves:", len(moves))
