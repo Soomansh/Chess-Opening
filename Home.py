@@ -6,72 +6,57 @@ st.set_page_config(
     layout="wide"
 )
 
-# ------------------------------------- HEADER ----------------------------------------------
 st.title("♟️ Chess Hub")
 st.subheader("Learn • Train • Analyze • Improve")
 
 st.markdown("---")
 
-# ---------------------------------------- INTRO -----------------------------------
 st.write("""
 Welcome to your chess platform.
 
 Everything is connected here:
+
 - Learn openings in depth
-- Practice positions on a board 
+- Practice positions on a board
 - Play against Stockfish AI
 - Review full games like Chess.com
 """)
 
 st.markdown("---")
 
-# --------------------------------------------- NAVIGATION ---------------------------------------------------
 st.header("Open Tools")
 
-col1, col2 = st.columns(2)
+st.success("""
+Use the sidebar on the left to navigate between all Chess Hub tools.
 
-with col1:
-    st.subheader("Learning")
-
-    if st.button("♟️ Chess Quiz"):
-        st.switch_page("pages/Chess_Quiz.py")
-
-    if st.button("Opening Explorer"):
-        st.switch_page("pages/1_Opening_Explorer.py")
-
-with col2:
-    st.subheader("Training & Analysis")
-
-    if st.button("Board Visualizer"):
-        st.switch_page("pages/2_Board_Visualizer.py")
-
-    if st.button("Play vs AI"):
-        st.switch_page("pages/3_Play_vs_AI.py")
-
-    if st.button("Chess Games Review"):
-        st.switch_page("pages/Review_Chess_Games.py")
-
-    if st.button("Endgame Puzzles"):
-        st.switch_page("pages/4_Endgame_Puzzles.py")
-
-    if st.button("Learn Endgames"):
-        st.switch_page("pages/5_Learn_Endgames.py")
-
-st.markdown("---")
-
-# -------------------------------------- STATUS ---------------------------------------
-st.header("What this platform does")
-
-st.info("""
-1. Opening learning system  
-2. Quiz-based training  
-3. Board practice tools  
-4. AI opponent (Stockfish)  
-5. Full game review system  
-6. Endgame puzzles  
-7. Endgame tactics learning system  
+Available pages:
+• Chess Quiz
+• Opening Explorer
+• Board Visualizer
+• Play vs AI
+• Endgame Puzzles
+• Learn Endgames
+• Guess The Elo
+• Review Chess Games
 """)
 
 st.markdown("---")
+
+st.header("What this platform does")
+
+st.info("""
+1. Opening learning system
+2. Quiz-based training
+3. Board practice tools
+4. AI opponent (Stockfish)
+5. Full game review system
+6. Endgame puzzles
+7. Endgame learning system
+8. Guess the Elo training
+""")
+
+st.markdown("---")
+
+st.write("Streamlit version:", st.__version__)
 
 st.caption("♟️ Chess Hub • Python • Streamlit • Stockfish")
