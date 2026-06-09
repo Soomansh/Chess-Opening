@@ -15,8 +15,11 @@ def go(page_name):
     st.session_state.page = page_name
 
 
-# ---------------- HOME PAGE ----------------
-if st.session_state.page == "Home":
+page = st.session_state.page
+
+
+# ================= HOME =================
+if page == "Home":
 
     st.title("♟️ Chess Hub")
     st.subheader("Learn • Train • Analyze • Improve")
@@ -35,7 +38,6 @@ if st.session_state.page == "Home":
 
     st.markdown("---")
 
-    # ---------------- NAVIGATION ----------------
     st.header("Open Tools")
 
     col1, col2 = st.columns(2)
@@ -43,87 +45,125 @@ if st.session_state.page == "Home":
     with col1:
         st.subheader("Learning")
 
-        st.button("♟️ Chess Quiz", on_click=go, args=("Chess_Quiz",))
-        st.button("Opening Explorer", on_click=go, args=("Opening_Explorer",))
-        st.button("📊 Guess the Elo", on_click=go, args=("Guess_Elo",))
+        if st.button("♟️ Chess Quiz"):
+            go("Chess_Quiz")
+            st.rerun()
+
+        if st.button("Opening Explorer"):
+            go("Opening_Explorer")
+            st.rerun()
+
+        if st.button("📊 Guess the Elo"):
+            go("Guess_Elo")
+            st.rerun()
 
     with col2:
         st.subheader("Training & Analysis")
 
-        st.button("Board Visualizer", on_click=go, args=("Board_Visualizer",))
-        st.button("Play vs AI", on_click=go, args=("Play_AI",))
-        st.button("Chess Games Review", on_click=go, args=("Game_Review",))
-        st.button("Endgame Puzzles", on_click=go, args=("Endgames",))
-        st.button("Learn Endgames", on_click=go, args=("Learn_Endgames",))
+        if st.button("Board Visualizer"):
+            go("Board_Visualizer")
+            st.rerun()
+
+        if st.button("Play vs AI"):
+            go("Play_AI")
+            st.rerun()
+
+        if st.button("Chess Games Review"):
+            go("Game_Review")
+            st.rerun()
+
+        if st.button("Endgame Puzzles"):
+            go("Endgames")
+            st.rerun()
+
+        if st.button("Learn Endgames"):
+            go("Learn_Endgames")
+            st.rerun()
 
 
-# ---------------- CHESS QUIZ ----------------
-elif st.session_state.page == "Chess_Quiz":
+# ================= CHESS QUIZ =================
+elif page == "Chess_Quiz":
     st.title("♟️ Chess Quiz")
 
     st.write("Your Chess Quiz app goes here.")
 
-    st.button("⬅ Back Home", on_click=go, args=("Home",))
+    if st.button("⬅ Back Home"):
+        go("Home")
+        st.rerun()
 
 
-# ---------------- OPENING EXPLORER ----------------
-elif st.session_state.page == "Opening_Explorer":
+# ================= OPENING =================
+elif page == "Opening_Explorer":
     st.title("📖 Opening Explorer")
 
     st.write("Your Opening Explorer app goes here.")
 
-    st.button("⬅ Back Home", on_click=go, args=("Home",))
+    if st.button("⬅ Back Home"):
+        go("Home")
+        st.rerun()
 
 
-# ---------------- GUESS THE ELO ----------------
-elif st.session_state.page == "Guess_Elo":
+# ================= GUESS ELO =================
+elif page == "Guess_Elo":
     st.title("📊 Guess The Elo")
 
     st.write("Your Guess The Elo app goes here.")
 
-    st.button("⬅ Back Home", on_click=go, args=("Home",))
+    if st.button("⬅ Back Home"):
+        go("Home")
+        st.rerun()
 
 
-# ---------------- BOARD VISUALIZER ----------------
-elif st.session_state.page == "Board_Visualizer":
+# ================= BOARD =================
+elif page == "Board_Visualizer":
     st.title("📊 Board Visualizer")
 
     st.write("Your Board Visualizer goes here.")
 
-    st.button("⬅ Back Home", on_click=go, args=("Home",))
+    if st.button("⬅ Back Home"):
+        go("Home")
+        st.rerun()
 
 
-# ---------------- PLAY VS AI ----------------
-elif st.session_state.page == "Play_AI":
+# ================= AI =================
+elif page == "Play_AI":
     st.title("♜ Play vs AI")
 
     st.write("Your AI chess game goes here.")
 
-    st.button("⬅ Back Home", on_click=go, args=("Home",))
+    if st.button("⬅ Back Home"):
+        go("Home")
+        st.rerun()
 
 
-# ---------------- GAME REVIEW ----------------
-elif st.session_state.page == "Game_Review":
+# ================= REVIEW =================
+elif page == "Game_Review":
     st.title("📊 Game Review")
 
     st.write("Your Game Review goes here.")
 
-    st.button("⬅ Back Home", on_click=go, args=("Home",))
+    if st.button("⬅ Back Home"):
+        go("Home")
+        st.rerun()
 
 
-# ---------------- ENDGAMES ----------------
-elif st.session_state.page == "Endgames":
+# ================= ENDGAMES =================
+elif page == "Endgames":
     st.title("🧩 Endgame Puzzles")
 
     st.write("Your Endgame Puzzles go here.")
 
-    st.button("⬅ Back Home", on_click=go, args=("Home",))
+    if st.button("⬅ Back Home"):
+        go("Home")
+        st.rerun()
 
 
-# ---------------- LEARN ENDGAMES ----------------
-elif st.session_state.page == "Learn_Endgames":
+# ================= LEARN ENDGAMES =================
+elif page == "Learn_Endgames":
     st.title("📚 Learn Endgames")
 
     st.write("Your Endgame Lessons go here.")
 
-    st.button("⬅ Back Home", on_click=go, args=("Home",))
+    if st.button("⬅ Back Home"):
+        go("Home")
+        st.rerun()
