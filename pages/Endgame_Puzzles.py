@@ -8,7 +8,7 @@ import random
 #======================================================================================================
 #Connect the stockfish analysis and lichess puzzles database
 #========================================================================================================
-PUZZLE_PATH = r"C:\Users\********\OneDrive\Desktop\Python\Raji Test\Basic\chess\puzzles.json"
+PUZZLE_PATH = "data/puzzles.json"
 STOCKFISH_PATH = r"C:\Users\*****\Downloads\stockfish-windows-x86-64-avx2 (1)\stockfish\stockfish-windows-x86-64-avx2.exe"
  
 #Lichess puzzles database=============================================================================================
