@@ -26,14 +26,17 @@ import chess.engine
 import chess.svg
 from io import StringIO
 import math
+import os
 
 # ==============================================================================================
 # CONFIG
 # ===================================================================================================
-import os
 
-os.chmod("stockfish/stockfish", 0o755)
-STOCKFISH_PATH = "stockfish/stockfish" 
+STOCKFISH_PATH = "stockfish/stockfish"
+
+import os
+os.chmod(STOCKFISH_PATH, 0o755)
+
 st.set_page_config(
     page_title="Chess Review",
     layout="wide"
