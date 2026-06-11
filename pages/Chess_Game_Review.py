@@ -1,7 +1,7 @@
 #AI ASSISTANCE WAS USED IN WRITING THIS CODE-------------------------------------------------------------------------
  
 """
-Chess Review V6 - Large Project Template
+Chess Review
 
 Features:
 - PGN Paste
@@ -17,8 +17,6 @@ Features:
 - Chessboard Rendering
 - Custom Styling
 
-IMPORTANT:
-Replace STOCKFISH_PATH below with your Stockfish executable.
 """
 
 import streamlit as st
@@ -32,8 +30,10 @@ import math
 # ==============================================================================================
 # CONFIG
 # ===================================================================================================
+import os
 
-STOCKFISH_PATH = "stockfish/stockfish-ubuntu-x86-64-avx2"
+os.chmod("stockfish/stockfish", 0o755)
+STOCKFISH_PATH = "stockfish/stockfish" 
 st.set_page_config(
     page_title="Chess Review",
     layout="wide"
