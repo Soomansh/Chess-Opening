@@ -7,7 +7,10 @@ import chess.engine
 # STOCKFISH SETUP
 # ============================================================================================================================
  
-STOCKFISH_PATH = "stockfish/stockfish-ubuntu-x86-64-avx2"
+import os
+
+os.chmod("stockfish/stockfish", 0o755)
+STOCKFISH_PATH = "stockfish/stockfish" 
 
 def load_engine():
     return chess.engine.SimpleEngine.popen_uci(STOCKFISH_PATH)
