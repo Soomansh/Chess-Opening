@@ -2,15 +2,15 @@ import streamlit as st
 import chess
 import chess.svg
 import chess.engine
+import os
 
 # ==================================================================================================================
 # STOCKFISH SETUP
 # ============================================================================================================================
  
-import os
 
-os.chmod("stockfish/stockfish", 0o755)
-STOCKFISH_PATH = "stockfish/stockfish" 
+STOCKFISH_PATH = "stockfish/stockfish"
+os.chmod(STOCKFISH_PATH, 0o755)
 
 def load_engine():
     return chess.engine.SimpleEngine.popen_uci(STOCKFISH_PATH)
