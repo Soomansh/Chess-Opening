@@ -10,6 +10,8 @@ import os
  
 
 STOCKFISH_PATH = "stockfish/stockfish"
+
+import os
 os.chmod(STOCKFISH_PATH, 0o755)
 
 def load_engine():
