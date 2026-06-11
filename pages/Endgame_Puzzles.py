@@ -9,7 +9,7 @@ import random
 #Connect the stockfish analysis and lichess puzzles database
 #========================================================================================================
 PUZZLE_PATH = "data/puzzles.json"
-STOCKFISH_PATH = "stockfish/stockfish" 
+STOCKFISH_PATH = "stockfish/stockfish-ubuntu-x86-64-avx2"
 #Lichess puzzles database=============================================================================================
 @st.cache_data
 def load_puzzles():
