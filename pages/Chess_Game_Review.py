@@ -33,7 +33,7 @@ import math
 # CONFIG
 # ===================================================================================================
 
-STOCKFISH_PATH = r"C:\Users\**************\Downloads\stockfish-windows-x86-64-avx2 (1)\stockfish\stockfish-windows-x86-64-avx2.exe"
+STOCKFISH_PATH = "stockfish/stockfish-ubuntu-x86-64-avx2"
 st.set_page_config(
     page_title="Chess Review",
     layout="wide"
