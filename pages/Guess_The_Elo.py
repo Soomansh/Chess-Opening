@@ -6,8 +6,7 @@ import random
 
 st.set_page_config(page_title="Guess The Elo", layout="wide")
 
-PGN_PATH = r"C:\Users\********\Downloads\lichess_db_standard_rated_2026-05.pgn\lichess_db_standard_rated_2026-05.pgn"
-MAX_GAMES = 500
+PGN_PATH = "data/games.pgn"MAX_GAMES = 500
 
 
 @st.cache_data
