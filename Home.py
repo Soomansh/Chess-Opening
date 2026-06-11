@@ -34,31 +34,31 @@ with col1:
     st.subheader("Learning")
 
     if st.button("♟️ Chess Quiz"):
-     st.switch_page("Chess_Quiz.py")
+    st.switch_page("pages/Chess_Quiz.py")
 
 if st.button("Opening Explorer"):
-    st.switch_page("Opening_Explorer.py")
+    st.switch_page("pages/Opening_Explorer.py")
 
 with col2:
     st.subheader("Training & Analysis")
 
     if st.button("Board Visualizer"):
-     st.switch_page("Board_Visualizer.py")
+    st.switch_page("pages/Board_Visualizer.py")
 
 if st.button("Play vs AI"):
-    st.switch_page("Play_Against_Ai.py")
+    st.switch_page("pages/Play_Against_Ai.py")
 
 if st.button("Chess Games Review"):
-    st.switch_page("Chess_Game_Review.py")
+    st.switch_page("pages/Chess_Game_Review.py")
 
 if st.button("Endgame Puzzles"):
-    st.switch_page("Endgame_Puzzles.py")
+    st.switch_page("pages/Endgame_Puzzles.py")
 
 if st.button("Learn Endgames"):
-    st.switch_page("Learn_Endgames.py")
+    st.switch_page("pages/Learn_Endgames.py")
 
 if st.button("Guess the Elo"):
-   st.switch_page("6_Guess_The_Elo.py")
+   st.switch_page("Guess_The_Elo.py")
 
 st.markdown("---")
 
