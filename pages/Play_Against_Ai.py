@@ -2,35 +2,34 @@ import streamlit as st
 import chess
 import chess.svg
 import chess.engine
-import os
-
-# ==================================================================================================================
-# STOCKFISH SETUP
-# ============================================================================================================================
- 
-# ===================================================================
-# STOCKFISH SETUP
-# ===================================================================
-
 import urllib.request
 import zipfile
 import os
 import glob
 
+# ==========================================================
+# STOCKFISH SETUP
+# ==========================================================
+
 ENGINE_DIR = "engine"
 
-if not os.path.exists(ENGINE_DIR):
-    os.makedirs(ENGINE_DIR)
+os.makedirs(ENGINE_DIR, exist_ok=True)
 
 zip_file = os.path.join(ENGINE_DIR, "stockfish.zip")
 
 if not os.path.exists(zip_file):
-    url = "https://stockfishchess.org/files/stockfish_16_linux_x64_avx2.zip"
-    urllib.request.urlretrieve(url, zip_file)
+    try:
+        url = "https://stockfishchess.org/files/stockfish_16_linux_x64_avx2.zip"
+        urllib.request.urlretrieve(url, zip_file)
+    except:
+        pass
 
-if not any("stockfish" in f.lower() for f in os.listdir(ENGINE_DIR)):
-    with zipfile.ZipFile(zip_file, "r") as z:
-        z.extractall(ENGINE_DIR)
+try:
+    if os.path.exists(zip_file):
+        with zipfile.ZipFile(zip_file, "r") as z:
+            z.extractall(ENGINE_DIR)
+except:
+    pass
 
 possible = glob.glob(f"{ENGINE_DIR}/**/*stockfish*", recursive=True)
 
@@ -42,27 +41,36 @@ for f in possible:
             os.chmod(f, 0o755)
         except:
             pass
+
         STOCKFISH_PATH = f
         break
 
-if STOCKFISH_PATH is None:
-    st.error("Stockfish engine could not be found.")
-    st.stop()
+
+@st.cache_resource
+def load_engine():
+    if STOCKFISH_PATH is None:
+        return None
+
+    try:
+        return chess.engine.SimpleEngine.popen_uci(STOCKFISH_PATH)
+    except:
+        return None
+
 
 engine = load_engine()
 
-# ==================================================================================================================================
-# BOARD STATE
-# ===========================================================================================================================================================================
+# ==========================================================
+# BOARD
+# ==========================================================
 
 if "board" not in st.session_state:
     st.session_state.board = chess.Board()
 
 board = st.session_state.board
 
-# =================================================================================================================================================
+# ==========================================================
 # OPENINGS
-# ===========================================================================================================================================================================
+# ==========================================================
 
 openings = {
     "Italian Game": ["e4","e5","Nf3","Nc6","Bc4","Bc5"],
@@ -72,168 +80,177 @@ openings = {
     "French Defense": ["e4","e6","d4","d5"]
 }
 
-st.title("♟️ Board Trainer + Stockfish Analyzer")
+st.title("♟ Board Trainer + Stockfish")
 
-# =========================================================================================================================================================
-# OPENING SELECTOR
-# ===============================================================================================================================================================
+opening = st.selectbox(
+    "Choose Opening",
+    list(openings.keys())
+)
 
-opening = st.selectbox("Choose Opening", list(openings.keys()))
-
-if "current_opening" not in st.session_state:
-    st.session_state.current_opening = opening
-
-if st.session_state.current_opening != opening:
-    st.session_state.current_opening = opening
-    st.session_state.board = chess.Board()
-
-board = st.session_state.board
-
-# =========================================================================================================================================
+# ==========================================================
 # CONTROLS
-# ==================================================================================================================
+# ==========================================================
 
 col1, col2 = st.columns(2)
 
 with col1:
-    if st.button("⬅ Undo"):
+    if st.button("Undo"):
         if board.move_stack:
             board.pop()
-        st.session_state.board = board
         st.rerun()
 
 with col2:
-    if st.button("♻ Reset"):
+    if st.button("Reset"):
         st.session_state.board = chess.Board()
         st.rerun()
 
-# ==============================================================================================================================================
+# ==========================================================
 # OPENING TRAINER
-# ===============================================================================================================================================
-
-st.subheader("Opening Trainer")
+# ==========================================================
 
 moves = openings[opening]
 step = len(board.move_stack)
 
 if step < len(moves):
-    st.write(f"Next Move: **{moves[step]}**")
+    st.write(f"Next Move: {moves[step]}")
 
-    if st.button("▶ Play Next Move"):
-        board.push_san(moves[step])
-        st.session_state.board = board
-        st.rerun()
+    if st.button("Play Next Move"):
+        try:
+            board.push_san(moves[step])
+            st.rerun()
+        except:
+            pass
 
-# ============================================================================================================================================
-# USER MOVE SECTION
-# =====================================================================================================================================================
+# ==========================================================
+# PLAY MOVE
+# ==========================================================
 
-st.markdown("---")
 st.subheader("Play Your Move")
 
-legal_moves = list(board.legal_moves)
-move_options = [board.san(m) for m in legal_moves]
+move_options = [board.san(m) for m in board.legal_moves]
 
-user_move = st.selectbox("Select your move", move_options)
+user_move = st.selectbox(
+    "Select move",
+    move_options
+)
 
 if st.button("Make Move"):
+
     try:
-        # Player move
         board.push_san(user_move)
 
-        # Stockfish response
-if engine:
-    result = engine.play(
-        board,
-        chess.engine.Limit(time=0.2)
-    )
-    board.push(result.move)
-else:
-    st.warning("Stockfish unavailable")
+        if engine:
+            result = engine.play(
+                board,
+                chess.engine.Limit(time=0.2)
+            )
+            board.push(result.move)
 
-# ==================================================================================================================================
-# STOCKFISH ANALYSIS
-# ==================================================================================================================
+        st.rerun()
 
-st.markdown("---")
+    except Exception as e:
+        st.error(str(e))
+
+# ==========================================================
+# ANALYSIS
+# ==========================================================
+
 st.subheader("Stockfish Analysis")
 
-level = st.selectbox("Engine Strength", ["400","800","1200","1600","2000"])
+level = st.selectbox(
+    "Engine Strength",
+    ["400","800","1200","1600","2000"]
+)
 
 depth_map = {
-    "400": 1,
-    "800": 2,
-    "1200": 5,
-    "1600": 10,
-    "2000": 15
+    "400":1,
+    "800":2,
+    "1200":5,
+    "1600":10,
+    "2000":15
 }
 
 depth = depth_map[level]
 
-def get_best_move(board):
+
+def get_best_move():
+
     if engine is None:
         return None
 
-    if engine:
-    info = engine.analyse(
-        board,
-        chess.engine.Limit(depth=depth)
-    )
+    try:
+        info = engine.analyse(
+            board,
+            chess.engine.Limit(depth=depth)
+        )
 
-    best = info["pv"][0]
-    st.success(f"Best Move: {board.san(best)}")
-else:
-    st.warning("Stockfish unavailable")
-# =============================================================================================================
-# BOARD DISPLAY
-# ==================================================================================================================
+        return info["pv"][0]
+
+    except:
+        return None
+
 
 arrows = []
 
-if not board.is_game_over():
-    try:
-        best = get_best_move(board)
-        arrows = [(best.from_square, best.to_square)]
-    except:
-        pass
+best = get_best_move()
 
-svg = chess.svg.board(board=board, size=600, arrows=arrows, coordinates=True)
-st.components.v1.html(svg, height=650)
+if best:
+    arrows = [
+        (best.from_square, best.to_square)
+    ]
 
-# ==================================================================================================================
-# MOVE HISTORY
-# ================================================================================================================
+svg = chess.svg.board(
+    board=board,
+    size=600,
+    arrows=arrows
+)
 
-st.subheader("Move History")
+st.components.v1.html(
+    svg,
+    height=650
+)
+
+# ==========================================================
+# HISTORY
+# ==========================================================
+
+history = []
 
 temp = chess.Board()
-history = []
 
 for move in board.move_stack:
     history.append(temp.san(move))
     temp.push(move)
 
+st.subheader("Move History")
 st.write(" ".join(history))
 
-# =============================================================================================================================
+# ==========================================================
 # ANALYZE BUTTON
-# =====================================================================================================================================================
+# ==========================================================
 
 if st.button("Analyze Position"):
-    try:
-        info = engine.analyse(board, chess.engine.Limit(depth=depth))
-        best = info["pv"][0]
-        st.success(f"Best Move: {board.san(best)}")
-    except:
-        st.error("Analysis failed")
 
-# ============================================================================================================================================
+    best = get_best_move()
+
+    if best:
+        st.success(
+            f"Best Move: {board.san(best)}"
+        )
+    else:
+        st.warning(
+            "Stockfish unavailable"
+        )
+
+# ==========================================================
 # STATUS
-# ==============================================================================================================================================
+# ==========================================================
 
 if board.is_checkmate():
-    st.error("Checkmate!")
+    st.error("Checkmate")
+
 elif board.is_stalemate():
-    st.warning("Stalemate!")
+    st.warning("Stalemate")
+
 elif board.is_check():
-    st.info("Check!")
+    st.info("Check")
