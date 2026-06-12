@@ -8,19 +8,53 @@ import os
 # STOCKFISH SETUP
 # ============================================================================================================================
  
+# ===================================================================
+# STOCKFISH SETUP
+# ===================================================================
 
-STOCKFISH_PATH = "stockfish/stockfish"
-
+import urllib.request
+import zipfile
 import os
-os.chmod(STOCKFISH_PATH, 0o755)
+import glob
 
+ENGINE_DIR = "engine"
+
+if not os.path.exists(ENGINE_DIR):
+    os.makedirs(ENGINE_DIR)
+
+zip_file = os.path.join(ENGINE_DIR, "stockfish.zip")
+
+if not os.path.exists(zip_file):
+    url = "https://stockfishchess.org/files/stockfish_16_linux_x64_avx2.zip"
+    urllib.request.urlretrieve(url, zip_file)
+
+if not any("stockfish" in f.lower() for f in os.listdir(ENGINE_DIR)):
+    with zipfile.ZipFile(zip_file, "r") as z:
+        z.extractall(ENGINE_DIR)
+
+possible = glob.glob(f"{ENGINE_DIR}/**/*stockfish*", recursive=True)
+
+STOCKFISH_PATH = None
+
+for f in possible:
+    if os.path.isfile(f):
+        try:
+            os.chmod(f, 0o755)
+        except:
+            pass
+        STOCKFISH_PATH = f
+        break
+
+if STOCKFISH_PATH is None:
+    st.error("Stockfish engine could not be found.")
+    st.stop()
+
+
+@st.cache_resource
 def load_engine():
     return chess.engine.SimpleEngine.popen_uci(STOCKFISH_PATH)
 
-if "engine" not in st.session_state:
-    st.session_state.engine = load_engine()
-
-engine = st.session_state.engine
+engine = load_engine()
 
 # ==================================================================================================================================
 # BOARD STATE
