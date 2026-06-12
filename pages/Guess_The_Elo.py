@@ -48,8 +48,9 @@ def load_games(path, max_games=500):
                 "opening": game.headers.get("Opening", "Unknown Opening"),
                 "result": game.headers.get("Result", "Unknown"),
                 "event": game.headers.get("Event", "Unknown Event"),
-
-                # NEW: Time control field
+#======================================================================================================================
+# Time control field
+#======================================================================================================================                
                 "time_control": game.headers.get("TimeControl", "Unknown"),
             })
             count += 1
@@ -68,8 +69,9 @@ def elo_bucket(elo):
         return "1600-2000"
     return "2000+"
 
-
-# NEW: classify time control
+#--=================================================================================================================
+# classify time control
+#=======================================================================================================================
 def classify_time_control(tc):
     if tc == "Unknown":
         return "Unknown"
@@ -152,29 +154,31 @@ with left:
     st.write(f"Move: {st.session_state.move_index}/{len(moves)}")
 
     move_text = []
-    temp = chess.Board()
+temp = chess.Board()
 
-    for i, mv in enumerate(moves):
+for i, mv in enumerate(moves):
     try:
         san = temp.san(mv)
         temp.push(mv)
-    except:
-        break
 
         if i % 2 == 0:
             move_text.append(f"{i//2+1}. {san}")
         else:
             move_text[-1] += f" {san}"
 
-    st.text_area(
-        "Moves",
-        " ".join(move_text),
-        height=200
-    )
+    except:
+        break
+
+st.text_area(
+    "Moves",
+    " ".join(move_text),
+    height=200
+)
 
 with right:
-
-    # NEW: Game information shown before guessing
+#=================================================================================================================
+# Game information shown before guessing
+#====================================================================================================================
     st.subheader("Game Information")
 
     time_type = classify_time_control(game["time_control"])
