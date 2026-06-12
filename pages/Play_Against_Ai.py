@@ -49,11 +49,6 @@ if STOCKFISH_PATH is None:
     st.error("Stockfish engine could not be found.")
     st.stop()
 
-
-@st.cache_resource
-def load_engine():
-    return chess.engine.SimpleEngine.popen_uci(STOCKFISH_PATH)
-
 engine = load_engine()
 
 # ==================================================================================================================================
@@ -147,14 +142,14 @@ if st.button("Make Move"):
         board.push_san(user_move)
 
         # Stockfish response
-        result = engine.play(board, chess.engine.Limit(time=0.2))
-        board.push(result.move)
-
-        st.session_state.board = board
-        st.rerun()
-
-    except Exception as e:
-        st.error(f"Move error: {e}")
+if engine:
+    result = engine.play(
+        board,
+        chess.engine.Limit(time=0.2)
+    )
+    board.push(result.move)
+else:
+    st.warning("Stockfish unavailable")
 
 # ==================================================================================================================================
 # STOCKFISH ANALYSIS
@@ -176,9 +171,19 @@ depth_map = {
 depth = depth_map[level]
 
 def get_best_move(board):
-    info = engine.analyse(board, chess.engine.Limit(depth=depth))
-    return info["pv"][0]
+    if engine is None:
+        return None
 
+    if engine:
+    info = engine.analyse(
+        board,
+        chess.engine.Limit(depth=depth)
+    )
+
+    best = info["pv"][0]
+    st.success(f"Best Move: {board.san(best)}")
+else:
+    st.warning("Stockfish unavailable")
 # =============================================================================================================
 # BOARD DISPLAY
 # ==================================================================================================================
