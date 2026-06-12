@@ -3,10 +3,21 @@ import chess
 import chess.pgn
 import chess.svg
 import random
+import os
 
-st.set_page_config(page_title="Guess The Elo", layout="wide")
+st.set_page_config(
+    page_title="Guess The Elo",
+    layout="wide"
+)
 
-PGN_PATH = "data/games.pgn"MAX_GAMES = 500
+PGN_PATH = "data/games.pgn"
+MAX_GAMES = 500
+
+if not os.path.exists(PGN_PATH):
+    st.error(
+        f"Missing file: {PGN_PATH}"
+    )
+    st.stop()
 
 
 @st.cache_data
@@ -144,8 +155,11 @@ with left:
     temp = chess.Board()
 
     for i, mv in enumerate(moves):
+    try:
         san = temp.san(mv)
         temp.push(mv)
+    except:
+        break
 
         if i % 2 == 0:
             move_text.append(f"{i//2+1}. {san}")
